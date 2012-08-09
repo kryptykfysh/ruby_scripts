@@ -1,5 +1,9 @@
 # geocode.rb
 
+# Simple script to return latitude and longtitude from an address string
+# using the Google geocode API.
+# For more info see https://developers.google.com/maps/documentation/geocoding/
+
 require 'open-uri'
 require 'rest-client'
 require 'crack'
@@ -14,4 +18,10 @@ def get_coordinates_from_address(addr)
 	return "#{latitude}, #{longtitude}"
 end
 
-puts get_coordinates_from_address('44 Nevis Avenue, Belfast, BT4 3AE')
+if $0 == __FILE__
+	unless ARGV.length == 1
+		puts "Usage: geocode 'address string'"
+		exit
+	end
+	puts get_coordinates_from_address(ARGV[0])
+end
