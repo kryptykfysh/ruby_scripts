@@ -1,7 +1,7 @@
 # sqlite_scripts.rb
 
 require 'sqlite3'
-=begin
+
 db = SQLite3::Database.new('sp500-data.sqlite')
 
 # results are returned as an array
@@ -13,7 +13,7 @@ db.results_as_hash = true
 results = db.execute("SELECT * from companies WHERE name LIKE 'C%';")
 puts results[0].class
 puts "#{results[0]['name']} is based in #{results[0]['city']}, #{results[0]['state']}"
-=end
+
 # Write two SQL queries and combine it with Ruby looping logic. 
 # Remember that subqueries can be thought of as "inner queries" to be executed 
 # before the query in which they are nested.
