@@ -3,7 +3,17 @@
 require 'nokogiri'
 require 'sqlite3'
 
-FIELD_NAMES = [['year', 'NUMERIC'],['category', 'VARCHAR'], ['procedure', 'VARCHAR', 'procedure_index' ],['county', 'VARCHAR', 'county_index'], ['hospital', 'VARCHAR', 'hospital_index'],  ['address', 'VARCHAR'], ['discharge_count', 'NUMERIC'], ['median_length_in_days', 'NUMERIC'], ['median_charge_per_stay', 'NUMERIC'] ]
+FIELD_NAMES = [
+	['year', 'NUMERIC'],
+	['category', 'VARCHAR'], 
+	['procedure', 'VARCHAR', 'procedure_index' ],
+	['county', 'VARCHAR', 'county_index'], 
+	['hospital', 'VARCHAR', 'hospital_index'],  
+	['address', 'VARCHAR'], 
+	['discharge_count', 'NUMERIC'], 
+	['median_length_in_days', 'NUMERIC'], 
+	['median_charge_per_stay', 'NUMERIC'] 
+]
 
 # Set up scrape and text file
 TABLE_DIV_ID = "#ctl00_ContentPlaceHolder1_gridHospitalList"      
@@ -12,8 +22,8 @@ OFILE.puts( FIELD_NAMES.map{|f| f[0]}.join("\t") )
 
 # Set up database; delete existing sqlite file
 DBNAME = "data-hold/ca-common-surgeries.sqlite"
-File.delete(DBNAME) if File.exists?DBNAME
-DB = SQLite3::Database.new( DBNAME )
+File.delete(DBNAME) if File.exists?(DBNAME)
+DB = SQLite3::Database.new(DBNAME)
 
 TABLE_NAME = "surgery_records"
 DB_INSERT_STATEMENT = "INSERT into #{TABLE_NAME} values
@@ -32,7 +42,7 @@ Dir.glob("data-hold/pages/*.html").reject{|f| f =~ /All Counties/}.each do |fnam
    
    page.css("#{TABLE_DIV_ID} tr")[1..-2].each do |tr|
       data_tds = tr.css('td').map{ |td|  
-         td.text.gsub(/[$,](?=\d)/, '').gsub(/\302\240|\s/, ' ').strip
+         td.text.gsub(/[$,](?=\d)/, '').gsub(/\s/, ' ').strip
       }
     data_row = meta_info + data_tds
       OFILE.puts( data_row.join("\t"))  
